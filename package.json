@@ -3,7 +3,7 @@
   "displayName": "UnityGLTF",
   "version": "2.17.3", 
   "unity": "2021.3",
-  "description": "Babylon Toolkit: Import and export GLTF 2.0 assets for Unity.",
+  "description": "GLTF 2.0 Support Package For Unity",
   "repository": {
     "url": "https://github.com/babylontoolkit/unitygltf.git"
   },
