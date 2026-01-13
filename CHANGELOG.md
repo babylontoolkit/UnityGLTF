@@ -4,6 +4,61 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.18.7] - 2026-01-12
+- add: Interactivity: add slerp nodes
+- change: Interactivity: replaced custom solution for child and parent methods to object model pointers
+- fix: obsolete warning for 'GameObject.GetScene' in U6.3+
+- fix: ShaderPassStripping to use GetOrCreate GltfSettings (in case setting asset not exists yet)
+- fix: Interactivity: changed matrix serialization to coloumn major order
+- fix: material/texture extraction with leading spaces in name
+
+## [2.18.6] - 2025-11-25
+- add: Interactivity VS export: added support for `AnimationClip.length`
+- fix: Interactivity VS export: added missing space conversion to `RaycastResult.worldPosition`
+- fix: `WebRequestDataLoader` changed URI handling for local files    
+
+## [2.18.5] - 2025-11-20
+- fix: deprecation warnings in Unity 6.2+
+
+## [2.18.4] - 2025-11-19
+- change: Interactivity spec changes
+- fix: BuiltRP material double side export
+
+## [2.18.3] - 2025-10-16
+- fix: animation step detection logic error
+
+## [2.18.2] - 2025-10-15
+- fix: Unity Build error
+
+## [2.18.1] - 2025-10-15
+- fix: visibility animation tracks changed to unsigned byte data type (0 = false, >0 = true) and STEP interpolationtype
+- add: Interactivity: merging on export of onSelect, onHoverIn and onHoverOut with same target (spec allows only once per target) 
+
+## [2.18.0] - 2025-10-08
+- add: animation support for KHR_node_visibility extension
+- add: export support for URP/Lit materials with "Preserve Specular" enabled
+- fix: animation export: add missing value component curves
+- fix: RoughRefraction filterMode set to Trilinear in RenderGraph mode (fixes #884)
+- fix: missing queue setup when using dispersion (fixes #883)
+- fix: BakeAnimation on export when speed < 0
+- fix: Interactivity Animator.Play export: speed, starttime, endtime setup
+- fix: Interactivity Animator.play: changed start time to cliplength when reversed
+- change: removed obsolete warning for KTX > 3.5 and Draco > 5.2
+- change: clearer animation export warning when gameobject was not exported
+- change: updated README with logo
+
+## [2.17.11] - 2025-09-22
+- fix: blendshape runtime import, positions was getting scaled to zero
+
+## [2.17.10] - 2025-09-12
+- fix: `texcoord` export, previously it was only exported when `Texture Transforms` was enabled
+- fix: Texture export cache, now using the Texture `updateCount` to ensure we don't use an older version from cache
+- fix: PBRGraph inspector now shows UV coordinate properties more reliably
+
+## [2.17.9] - 2025-08-25
+- add: `MarkMaterialAsCustomShaderExport` API to keep original property names in animations
+- change: Importer should always show buttons for Extract / Restore materials
+
 ## [2.17.8] - 2025-08-20
 - fix: Build error
 

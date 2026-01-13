@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityGLTF.Interactivity.Export;
 using UnityGLTF.Interactivity.Schema;
 
 namespace UnityGLTF.Interactivity.VisualScripting.Export
@@ -15,6 +16,8 @@ namespace UnityGLTF.Interactivity.VisualScripting.Export
         {
             get => typeof(TVisualGraphUnit);
         }
+
+        protected virtual bool StopPropagationDefault => false;
 
         protected virtual string NodeIndexId => Event_OnSelectNode.IdValueSelectedNodeIndex;
         protected virtual string HitLocationId => Event_OnSelectNode.IdValueLocalHitLocation;
@@ -56,7 +59,7 @@ namespace UnityGLTF.Interactivity.VisualScripting.Export
             // Config for stop propagation will just default to False. We don't have an equivalent
             // parameter in Unity Visual Scripting so we will default to preventing the selection
             // event from being propagated up the hierarchy.
-            node.Configuration["stopPropagation"].Value = false;
+            node.Configuration["stopPropagation"].Value = StopPropagationDefault;
 
             node.FlowOut("out").MapToControlOutput(triggerOutput);
             
@@ -105,7 +108,19 @@ namespace UnityGLTF.Interactivity.VisualScripting.Export
                                     if (secondGetMember.member.ToString() == "RaycastResult.worldPosition")
                                     {
                                         if (node.OutputValueSocket.ContainsKey(HitLocationId))
-                                            unitExporter.MapValueOutportToSocketName(secondGetMember.value, HitLocationId, node);
+                                        {
+                                            if (!unitExporter.Context.addUnityGltfSpaceConversion)
+                                            {
+                                                unitExporter.MapValueOutportToSocketName(secondGetMember.value, HitLocationId, node);
+                                            }
+                                            else
+                                            {
+                                                SpaceConversionHelpers.AddSpaceConversion(unitExporter, out var vector3Input, out var convertedVector3Socket);
+                                                vector3Input.ConnectToSource(node.ValueOut(HitLocationId));
+                                                convertedVector3Socket.MapToPort(secondGetMember.value);
+                                            }
+
+                                        }
                                     }
                                     if (secondGetMember.member.ToString() == "RaycastResult.gameObject")
                                     {
@@ -126,7 +141,18 @@ namespace UnityGLTF.Interactivity.VisualScripting.Export
 
                         if (expose.valueOutputs.TryGetValue("position", out var pointerPositionOutput)
                             && node.OutputValueSocket.ContainsKey(HitLocationId))
-                            unitExporter.MapValueOutportToSocketName(pointerPositionOutput, HitLocationId, node);
+                        {
+                            if (!unitExporter.Context.addUnityGltfSpaceConversion)
+                            {
+                                unitExporter.MapValueOutportToSocketName(pointerPositionOutput, HitLocationId, node);
+                            }
+                            else
+                            {
+                                SpaceConversionHelpers.AddSpaceConversion(unitExporter, out var vector3Input, out var convertedVector3Socket);
+                                vector3Input.ConnectToSource(node.ValueOut(HitLocationId));
+                                convertedVector3Socket.MapToPort(pointerPositionOutput);
+                            }
+                        }
                         
                         if (expose.valueOutputs.TryGetValue("pointerId", out var pointerIdOutput)
                             && node.OutputValueSocket.ContainsKey(ControllerIndexId))
