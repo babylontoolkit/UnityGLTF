@@ -1,7 +1,7 @@
 {
   "name": "org.khronos.unitygltf",
   "displayName": "UnityGLTF",
-  "version": "2.18.9", 
+  "version": "2.19.1", 
   "unity": "2021.3",
   "description": "GLTF 2.0 Support Package For Unity",
   "repository": {
